@@ -75,10 +75,41 @@
 		<div class="header_right">
 			<div class="login">
 				<ul>
-					{% if user %}
-					<li><a href="/dashboard"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ user }}</a></li>
-					{% endif %}
-					<li><a href="/logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#myModal5"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
+					<li>
+						<div class="search-bar">
+							<div class="search">		
+								<a class="play-icon popup-with-zoom-anim" href="#small-dialog"><i class="glyphicon glyphicon-search"> </i> </a>
+							</div>
+							<script src="{{ url_for('static', filename='js/jquery.magnific-popup.js') }}" type="text/javascript"></script>
+								<div id="small-dialog" class="mfp-hide">
+									<div class="search-top">
+										<div class="login_pop">
+											<form action="#" method="post">
+												<input type="submit" value="">
+												<input type="text" name="Type something..." value="Type something..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
+											</form>
+										</div>			
+									</div>
+									<script>
+												$(document).ready(function() {
+												$('.popup-with-zoom-anim').magnificPopup({
+													type: 'inline',
+													fixedContentPos: false,
+													fixedBgPos: true,
+													overflowY: 'auto',
+													closeBtnInside: true,
+													preloader: false,
+													midClick: true,
+													removalDelay: 300,
+													mainClass: 'my-mfp-zoom-in'
+												});
+																												
+												});
+									</script>				
+								</div>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<div class="clearfix"></div>
@@ -143,9 +174,6 @@
                     <li>
                         <a href="/dashboard_reports"><i class="fa fa-table "></i>Past Reports</a>
                     </li>
-                    <li>
-                        <a href="/dashboard_settings"><i class="fa fa-edit "></i>Settings</a>
-                    </li>
                     
                 </ul>
 
@@ -159,16 +187,16 @@
 					<div class="container">
 						<div id="book" class="col-md-4 content_middle wow flipInY" data-wow-duration="1.5s" data-wow-delay="0.3s">
 							<h3>Book An Appointment</h3>
-								<form action="book_appointment" method="post">
-								<!-- <input type="text" name="book_name" value="Name" onfocus="this.value='';" onblur="if(this.value=='') {this.value='Name';}" required="">
-								<input type="text" name="book_email" value="Email" onfocus="this.value='';" onblur="if(this.value=='') {this.value='Email';}" required="">				
-								 --><input class="date" name="book_date" id="datepicker" type="text" value="dd/mm/year" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '19/10/2016';}" required="">
-								<select name = "book_type" id="country" onchange="change_country(this.value)" class="frm-field required sect">
+								<form action="#" method="post">
+								<input type="text" name="Name" value="Name" onfocus="this.value='';" onblur="if(this.value=='') {this.value='Name';}" required="">
+								<input type="text" name="Email" value="Email" onfocus="this.value='';" onblur="if(this.value=='') {this.value='Email';}" required="">
+								<input class="date" name="19/10/2016" id="datepicker" type="text" value="dd/mm/year" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '19/10/2016';}" required="">
+								<select id="country" onchange="change_country(this.value)" class="frm-field required sect">
 									<option value="null">Select Department</option>
-									<option value="Health Care">Health Care</option> 
-									<option value="Body Checkup">Body Checkup</option>					
-									<option value="Out Patient">Out Patient</option>
-									<option value="Surgery">Surgery</option>											
+									<option value="null">Health Care</option> 
+									<option value="null">Body Checkup</option>					
+									<option value="null">Out Patient</option>
+									<option value="null">Surgery</option>											
 								</select>
 								<input type="submit" value="Book Now">
 							</form>
