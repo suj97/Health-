@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Gajanan Hospital and Laproscopy Center</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
+<!-- BOOTSTRAP STYLES-->
+    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet" />
+     <!-- FONTAWESOME STYLES-->
+    <link href="{{ url_for('static', filename='assets/css/font-awesome.css') }}" rel="stylesheet" />
+        <!-- CUSTOM STYLES-->
+    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/swipebox.css') }}">
+<link href="{{ url_for('static', filename='css/popuo-box.css') }}" rel="stylesheet" type="text/css" media="all"/>
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ url_for('static', filename='assets/css/custom.css') }}" rel="stylesheet" type="text/css" media="all" />
+
+<!-- js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/numscroller-1.0.js') }}"></script>
+
+<!-- //js -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap-3.1.1.min.js') }}"></script>
+
+<!-- fonts -->
+<link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+	<!-- start-smoth-scrolling -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/move-top.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/easing.js') }}"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$(".scroll").click(function(event){		
+					event.preventDefault();
+					$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+				});
+			});
+		</script>
+	<!-- start-smoth-scrolling -->
+
+	<!-- swipe box js -->
+	<script src="{{ url_for('static', filename='js/jquery.swipebox.min.js') }}"></script> 
+	    <script type="text/javascript">
+			jQuery(function($) {
+				$(".swipebox").swipebox();
+			});
+	</script>
+<!-- //swipe box js -->
+
+	<script src="{{ url_for('static', filename='assets/js/jquery-1.10.2.js') }}"></script>
+      <!-- BOOTSTRAP SCRIPTS -->
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="{{ url_for('static', filename='assets/js/jquery.metisMenu.js') }}"></script>
+      <!-- CUSTOM SCRIPTS -->
+    <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
+
+</head>
+<body>
+<!-- header -->
+<div class="header wow zoomIn">
+	<div class="container">
+		<div class="header_left" data-wow-duration="2s" data-wow-delay="0.5s">
+			<ul>
+				<li><a href="tel:0240-248-1097"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> 0240-248-1097</a></li>
+				<li><a href="mailto:reception@gajananlaproscopy.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@gajananlaproscopy.com</a></li>
+			</ul>
+		</div>
+		<div class="header_right">
+			<div class="login">
+				<ul>
+					{% if user %}
+					<li><a href="/dashboard"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ user }}</a></li>
+					{% endif %}
+					<li><a href="/logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
+				</ul>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<!-- //header -->
+<div class="header-bottom ">
+		<div class="container">
+			<nav class="navbar navbar-default">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+					<div class="logo grid">
+						<div class="grid__item color-3">
+							<h1><a class="link link--nukun" href="{{ url_for('index')}}"><i></i>HEA<span>L</span>TH+</a></h1>
+						</div>
+					</div>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+					<nav class="menu menu--horatio">
+						<ul class="nav navbar-nav menu__list">
+							<li class="menu__item"><a href="{{ url_for('index')}}" class="menu__link">Home</a></li>
+							<li class="menu__item"><a href="{{ url_for('facilities')}}" class="menu__link">Facilities</a></li> 
+							<li class="menu__item"><a href="{{ url_for('services')}}" class="menu__link">Services</a></li> 
+							<li class="menu__item"><a href="{{ url_for('about')}}" class="menu__link">About</a></li>
+							<li class="menu__item"><a href="{{ url_for('contact')}}" class="menu__link">Contact</a></li>
+						</ul>
+					</nav>
+				</div>
+			</nav>
+		</div>
+	</div>
+
+<!-- dashboard -->
+<div id="wrapper">
+	<!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li class="text-center user-image-back">
+                        <img src="{{ url_for('static', filename='assets/img/find_user.png') }}" class="img-responsive" />
+                     
+                    </li>
+
+
+                    <li>
+                        <a href="/dashboard"><i class="fa fa-desktop "></i>Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/dashboard_book"><i class="fa fa-edit "></i>Book an Appointment</a>
+                    </li>
+                    <li>
+                        <a href="/dashboard_reports"><i class="fa fa-table "></i>Past Reports</a>
+                    </li>
+                    <li>
+                        <a href="/dashboard_settings"><i class="fa fa-edit "></i>Settings</a>
+                    </li>
+                    
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                     <h2 class="text-center dash-welcome">Welcome {{ user }} !</h2>   
+                    </div>
+                </div>              
+                 <!-- /. ROW  -->
+                  <hr />
+
+                <div class="row">
+                    <div class="col-md-12" style="margin-left: 20px">
+                        <h3>Patient Information </h3>
+                    </div>
+                    <div class="col-md-12">
+                        <hr >
+                    </div>
+                    {% if record %}
+                    <div class="col-md-12 patient-details">
+                        <h4>Patient Name : <span style="color:black"> {{ record[1] }} </span> </h4>
+                    </div>
+                    <div class="col-md-12 patient-details">
+                        <h4>Age : <span style="color:black"> {{ record[2] }} </span></h4>
+                    </div>
+                    <div class="col-md-12 patient-details">
+                        <h4>Sex : <span style="color:black"> {{ record[3] }} </span></h4>
+                    </div>
+                    <div class="col-md-12 patient-details">
+                        <h4>Blood Group : <span style="color:black"> {{ record[4] }} </span></h4>
+                    </div>
+                    <div class="col-md-12 patient-details">
+                        <h4>Weight : <span style="color:black"> {{ record[5] }} Kg</span> </h4>
+                    </div>
+                    <div class="col-md-12 patient-details">
+                        <h4>Contact No : <span style="color:black"> {{ record[6] }} </span></h4>
+                    </div>
+				  {% endif %}
+                </div>
+              
+                 <!-- /. ROW  -->           
+    		</div>
+             <!-- /. PAGE INNER  -->
+        </div>
+         <!-- /. PAGE WRAPPER  -->
+</div>
+
+
+<!-- //dashboard -->
+
+
+<!-- contact -->
+<div class="contact">
+	<div class="container">
+		
+		<div class="col-md-6 contact-right wow fadeIn animated animated" data-wow-delay="0.1s" data-wow-duration="2s">
+			<h3>Contact Us</h3>
+			<div class="strip"></div>
+			<ul class="con-icons">
+				<li><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>+91 8888826243</li>
+				<li><a href="mailto:reception@gajananlaproscopy.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@gajananlaproscopy.com</a></li>
+			</ul>
+			<ul class="fb_icons">
+				<li class="hvr-rectangle-out"><a class="fb" href="#"></a></li>
+				<li class="hvr-rectangle-out"><a class="twit" href="#"></a></li>
+				<li class="hvr-rectangle-out"><a class="goog" href="#"></a></li>
+			</ul>
+			<h3>Newsletter Sign up</h3>
+			<div class="strip"></div>
+			<form action="#" method="post">
+				<input type="text" name="Name" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
+				<input type="email" name="Email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
+				<input type="submit" value="Submit">
+			</form>
+		</div>
+		<div class="col-md-6 contact-left wow fadeIn animated animated" data-wow-delay="0.1s" data-wow-duration="2s">
+			<h2>Find Us Here</h2>
+			<div class="strip"></div>
+			<p class="para">Gajanan Hospital and Laproscopy Center<br>Plot No D-12, N-2, CIDCO, Aurangabad.</p>
+			<p class="copy-right">Designed By -<br> Onkar Singh and Sujay Khandagale</p>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+<!-- //contact -->
+
+
+</body>
+</html>
