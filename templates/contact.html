@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Gajanan Hospital and Laproscopy Center</title>
+<title>Health+</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -44,49 +44,20 @@
 	<div class="container">
 		<div class="header_left" data-wow-duration="2s" data-wow-delay="0.5s">
 			<ul>
-				<li><a href="tel:02402481097"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>0240 2481097</a></li>
-				<li><a href="reception@gajananlaproscopy.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@gajananlaproscopy.com</a></li>
+				<li><a href="tel:02402481097"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>0240-248-1097</a></li>
+				<li><a href="reception@health+.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@health+.com</a></li>
 			</ul>
 		</div>
 		<div class="header_right">
 			<div class="login">
 				<ul>
+					{% if user %}
+					<li><a href="/dashboard"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ user }}</a></li>
+					<li><a href="/logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
+					{% else %}
 					<li><a href="#" data-toggle="modal" data-target="#myModal4"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Login</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#myModal5"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Signup</a></li>
-					<li>
-						<div class="search-bar">
-							<div class="search">		
-								<a class="play-icon popup-with-zoom-anim" href="#small-dialog"><i class="glyphicon glyphicon-search"> </i> </a>
-							</div>
-							<script src="{{ url_for('static', filename='js/jquery.magnific-popup.js') }}" type="text/javascript"></script>
-								<div id="small-dialog" class="mfp-hide">
-									<div class="search-top">
-										<div class="login_pop">
-											<form action="#" method="post">
-												<input type="submit" value="">
-												<input type="text" name="Type something..." value="Type something..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
-											</form>
-										</div>				
-									</div>
-									<script>
-												$(document).ready(function() {
-												$('.popup-with-zoom-anim').magnificPopup({
-													type: 'inline',
-													fixedContentPos: false,
-													fixedBgPos: true,
-													overflowY: 'auto',
-													closeBtnInside: true,
-													preloader: false,
-													midClick: true,
-													removalDelay: 300,
-													mainClass: 'my-mfp-zoom-in'
-												});
-																												
-												});
-									</script>				
-								</div>
-						</div>
-					</li>
+					{% endif %}
 				</ul>
 			</div>
 			<div class="clearfix"></div>
@@ -118,8 +89,7 @@
 					<nav class="menu menu--horatio">
 						<ul class="nav navbar-nav menu__list">
 							<li class="menu__item"><a href="{{ url_for('index')}}" class="menu__link">Home</a></li>
-							<li class="menu__item"><a href="{{ url_for('facilities')}}" class="menu__link">Facilities</a></li> 
-							<li class="menu__item"><a href="{{ url_for('services')}}" class="menu__link">Services</a></li> 
+							<li class="menu__item"><a href="{{ url_for('facilities')}}" class="menu__link">Facilities</a></li>
 							<li class="menu__item"><a href="{{ url_for('about')}}" class="menu__link">About</a></li>
 							<li class="menu__item menu__item--current"><a href="{{ url_for('contact')}}" class="menu__link">Contact</a></li>
 						</ul>
@@ -150,10 +120,9 @@
 				</form>
 			</div>
 			<div class="col-md-6 contact-left-map ">
-				<p>"Lorem Ipsum"is the common name dummy text often used in the design, printing, and type setting industriescommon name dummy text often used in the design, printing, and type setting industries Lorem Ipsum"is the common name dummy text often used in the design, printing, and type setting industries "</p>
 				<ul class="contact-list">
-					<li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>Gajanan Hospital and Laproscopy Center,  D-12, N-2, CIDCO, Aurangabad.</li>
-					<li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><a href="mailto:reception@gajananlaproscopy.com">reception@gajananlaproscopy.com</a></li>
+					<li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>Health+ Hospital and Medical College, Sector 23, Chandigarh.</li>
+					<li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><a href="mailto:reception@health+.com">reception@health+.com</a></li>
 					<li><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>+91 8888826243</li>
 				</ul>
 			</div>						
@@ -161,7 +130,7 @@
 		</div>
 		<h3 class="tittle">View On map</h3>
 		<div class="map">
-			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.280561050587!2d75.37364281491365!3d19.87037158663711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdba2f0a18a54a7%3A0x3082329064ac3c01!2sGajanan+Hospital+and+Laproscopy+Centre!5e0!3m2!1sen!2sin!4v1470134115219" style="border:0"></iframe>
+			<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2671.9432035285636!2d76.76619564538612!3d30.739797027135076!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1479480011000" style="border:0" allowfullscreen></iframe>
 		</div>
 	</div>
 </div>
@@ -175,7 +144,7 @@
 			<div class="strip"></div>
 			<ul class="con-icons">
 				<li><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>+91 8888826243</li>
-				<li><a href="mailto:reception@gajananlaproscopy.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@gajananlaproscopy.com</a></li>
+				<li><a href="reception@health+.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@health+.com</a></li>
 			</ul>
 			<ul class="fb_icons">
 				<li class="hvr-rectangle-out"><a class="fb" href="#"></a></li>
@@ -193,7 +162,7 @@
 		<div class="col-md-6 contact-left wow fadeIn animated animated" data-wow-delay="0.1s" data-wow-duration="2s">
 			<h2>Find Us Here</h2>
 			<div class="strip"></div>
-			<p class="para">Gajanan Hospital and Laproscopy Center<br>Plot No D-12, N-2, CIDCO, Aurangabad.</p>
+			<p class="para">Health+ Hospital and Medical College<br>Sector 23, Chandigarh.</p>
 			<p class="copy-right">Designed By -<br> Onkar Singh and Sujay Khandagale</p>
 		</div>
 		<div class="clearfix"></div>
@@ -212,14 +181,52 @@
 									
 									<div class="login-right">
 										<h3>Sign in with your account</h3>
+										{% with messages = get_flashed_messages(category_filter=["login_error"]) %}
+								  	{% if messages %}
+								    	<ul class=flash>
+									   		{% for error in messages %}
+										   		<h4 style="color:red"> {{ error }} </h4>
+											{% endfor %}
+										</ul>
+										<script type="text/javascript">
+											$(window).load(function(){
+												$('#myModal4').modal('show');
+													});
+										</script>
+									{% endif %}
+								{% endwith %}
+								{% with messages = get_flashed_messages(category_filter=["login_success"]) %}
+								  	{% if messages %}
+								    	<ul class=flash>
+									   		{% for error in messages %}
+										   		<h4 style="color:green"> {{ error }} </h4>
+											{% endfor %}
+										</ul>
+									{% endif %}
+								{% endwith %}
+
+
+
 										<form action="login" method="post">
+											<!-- <div class="sign-in">
+											{% with messages = get_flashed_messages(category_filter=["login"]) %}
+											  {% if messages %}
+											    <ul class=flash>
+											    {% for error in messages %}
+											    	<h4 style="color:red"> {{ error }} </h4>
+											     {% endfor %}
+											    </ul>
+											  {% endif %}
+											{% endwith %}
+											</div> -->
+
 											<div class="sign-in">
-												<h4>Email :</h4>
-												<input type="text" name="email" value="Type here" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Type here';}" required="">	
+												<br><h4>Email :</h4>
+												<input type="text" name="email" placeholder="Type here" required="">	
 											</div>
 											<div class="sign-in">
 												<h4>Password :</h4>
-												<input type="password" name="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" required="">
+												<input type="password" name="password" placeholder="Password" required="">
 												<a href="#">Forgot password?</a>
 											</div>
 											<div class="single-bottom">
@@ -250,24 +257,98 @@
 							<div class="login-grids">
 									<div class="login-bottom">
 										<h3>Sign up for free</h3>
+										{% with messages = get_flashed_messages(category_filter=["register_error"]) %}
+								  	{% if messages %}
+								    	<ul class=flash>
+									   		{% for error in messages %}
+										   		<h4 style="color:red"> {{ error }} </h4>
+											{% endfor %}
+										</ul>
+										<script type="text/javascript">
+											$(window).load(function(){
+												$('#myModal5').modal('show');
+													});
+										</script>
+									{% endif %}
+								{% endwith %}
+										{% with messages = get_flashed_messages(category_filter=["register_success"]) %}
+								  	{% if messages %}
+								    	<ul class=flash>
+									   		{% for error in messages %}
+										   		<h4 style="color:green"> {{ error }} </h4>
+											{% endfor %}
+										</ul>
+										<script type="text/javascript">
+											$(window).load(function(){
+												$('#myModal5').modal('show');
+													});
+										</script>
+									{% endif %}
+								{% endwith %}
 										<form action="register" method="post">
 											<div class="sign-up">
-												<h4>Email :</h4>
-												<input type="text" name="email" value="Type here" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Type here';}" required="">	
+											<!-- <div class="sign-up">
+											{% with messages = get_flashed_messages(category_filter=["register"]) %}
+											  {% if messages %}
+											    <ul class=flash>
+											    {% for error in messages %}
+											    	<h4 style="color:red"> {{ error }} </h4>
+											     {% endfor %}
+											    </ul>
+											  {% endif %}
+											{% endwith %}
+											</div> -->
+												<br><h4>Email :</h4>
+												<input type="text" name="email" placeholder="Type here" required="">	
 											</div>
 											<div class="sign-up">
 												<h4>Password :</h4>
-												<input type="password" name="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" required="">
+												<input type="password" name="password" placeholder="Password" required="">
 												
 											</div>
 											<div class="sign-up">
 												<h4>Re-type Password :</h4>
-												<input type="password" name="retype_password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" required="">
+												<input type="password" name="retype_password" placeholder="Password" required="">
+												
+											</div>
+											<div class="sign-up">
+												<h4>Name :</h4>
+												<input type="text" name="patient_name" placeholder="Enter your name" required="">
+												
+											</div>
+											<div class="sign-up">
+												<h4>Age :</h4>
+												<input type="text" name="patient_age" placeholder="Enter your age" required="">
+												
+											</div>
+											<div class="sign-up">
+												<h4>Sex :</h4>
+												<select name="patient_sex" required="">
+													<option value="none">Select an option</option>
+													<option value="M">Male</option>
+													<option value="F">Female</option>
+													<option value="Other">Other</option>
+												</select>
+											</div>
+											<div class="sign-up">
+												<h4>Blood Group :</h4>
+												<input type="text" name="patient_blood_group" placeholder="Enter Blood Group" required="">
+												
+											</div>
+											<div class="sign-up">
+												<h4>Weight :</h4>
+												<input type="text" name="patient_weight" placeholder="Enter your weight" required>
+												
+											</div>
+											<div class="sign-up">
+												<h4>Contact Number :</h4>
+												<input type="text" name="patient_contact" placeholder="Enter Contact No" required="">
 												
 											</div>
 											<div class="sign-up">
 												<input type="submit" value="REGISTER NOW" >
 											</div>
+
 											
 										</form>
 									</div>

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Gajanan Hospital and Laproscopy Center</title>
-<!-- for-mobile-apps -->
+<title> Health+</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- //for-mobile-apps -->
+
 <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
 <!-- BOOTSTRAP STYLES-->
     <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet" />
@@ -53,13 +52,6 @@
 	</script>
 <!-- //swipe box js -->
 
-	<script src="{{ url_for('static', filename='assets/js/jquery-1.10.2.js') }}"></script>
-      <!-- BOOTSTRAP SCRIPTS -->
-    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
-    <!-- METISMENU SCRIPTS -->
-    <script src="{{ url_for('static', filename='assets/js/jquery.metisMenu.js') }}"></script>
-      <!-- CUSTOM SCRIPTS -->
-    <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
 
 </head>
 <body>
@@ -69,47 +61,17 @@
 		<div class="header_left" data-wow-duration="2s" data-wow-delay="0.5s">
 			<ul>
 				<li><a href="tel:0240-248-1097"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> 0240-248-1097</a></li>
-				<li><a href="mailto:reception@gajananlaproscopy.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@gajananlaproscopy.com</a></li>
+				<li><a href="mailto:reception@health+.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@health+.com</a></li>
 			</ul>
 		</div>
 		<div class="header_right">
 			<div class="login">
 				<ul>
-					<li><a href="#" data-toggle="modal" data-target="#myModal5"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
-					<li>
-						<div class="search-bar">
-							<div class="search">		
-								<a class="play-icon popup-with-zoom-anim" href="#small-dialog"><i class="glyphicon glyphicon-search"> </i> </a>
-							</div>
-							<script src="{{ url_for('static', filename='js/jquery.magnific-popup.js') }}" type="text/javascript"></script>
-								<div id="small-dialog" class="mfp-hide">
-									<div class="search-top">
-										<div class="login_pop">
-											<form action="#" method="post">
-												<input type="submit" value="">
-												<input type="text" name="Type something..." value="Type something..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '';}">
-											</form>
-										</div>			
-									</div>
-									<script>
-												$(document).ready(function() {
-												$('.popup-with-zoom-anim').magnificPopup({
-													type: 'inline',
-													fixedContentPos: false,
-													fixedBgPos: true,
-													overflowY: 'auto',
-													closeBtnInside: true,
-													preloader: false,
-													midClick: true,
-													removalDelay: 300,
-													mainClass: 'my-mfp-zoom-in'
-												});
-																												
-												});
-									</script>				
-								</div>
-						</div>
-					</li>
+					{% if user %}
+					<li><a href="/dashboard"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ user }}</a></li>
+					{% endif %}
+					<li><a href="/logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
+					
 				</ul>
 			</div>
 			<div class="clearfix"></div>
@@ -141,8 +103,7 @@
 					<nav class="menu menu--horatio">
 						<ul class="nav navbar-nav menu__list">
 							<li class="menu__item"><a href="{{ url_for('index')}}" class="menu__link">Home</a></li>
-							<li class="menu__item"><a href="{{ url_for('facilities')}}" class="menu__link">Facilities</a></li> 
-							<li class="menu__item"><a href="{{ url_for('services')}}" class="menu__link">Services</a></li> 
+							<li class="menu__item"><a href="{{ url_for('facilities')}}" class="menu__link">Facilities</a></li>
 							<li class="menu__item"><a href="{{ url_for('about')}}" class="menu__link">About</a></li>
 							<li class="menu__item"><a href="{{ url_for('contact')}}" class="menu__link">Contact</a></li>
 						</ul>
@@ -174,7 +135,9 @@
                     <li>
                         <a href="/dashboard_reports"><i class="fa fa-table "></i>Past Reports</a>
                     </li>
-                    
+                    <li>
+                        <a href="/dashboard_settings"><i class="fa fa-edit "></i>Settings</a>
+                    </li>
                 </ul>
 
             </div>
@@ -183,7 +146,51 @@
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-            	
+            	<div class="row">
+					<div class="col-md-12">
+						<h2 class="dash-welcome">Past Reports</h2>
+						<hr />
+					</div>    
+					<div class="col-md-12 table-responsive">
+					<table class="table table-hover">
+					<thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Prescription</th>
+                            </tr>
+                        </thead>
+					{% for row in record %}
+					    <tr class="success">
+					        <td>{{ row[1] }}</td>
+					        <td>{{ row[2] }}</td>
+					    </tr>
+					{% endfor %}
+					</table>
+					</div>
+
+					<div class="col-md-12" style="margin-top: 40px;">
+						<h2 class="dash-welcome">Pending Appointments</h2>
+						<hr />
+					</div>
+
+					<div class="col-md-12 table-responsive">
+					<table class="table table-hover">
+						<thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        {% for row in appts %}
+					    <tr class="danger">
+					        <td>{{ row[3] }}</td>
+					        <td>{{ row[4] }}</td>
+					    </tr>
+					{% endfor %}
+					</table>
+					</div>
+
+            	</div>
             </div>
              <!-- /. PAGE INNER  -->
         </div>
@@ -203,7 +210,7 @@
 			<div class="strip"></div>
 			<ul class="con-icons">
 				<li><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>+91 8888826243</li>
-				<li><a href="mailto:reception@gajananlaproscopy.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@gajananlaproscopy.com</a></li>
+				<li><a href="reception@health+.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>reception@health+.com</a></li>
 			</ul>
 			<ul class="fb_icons">
 				<li class="hvr-rectangle-out"><a class="fb" href="#"></a></li>
@@ -221,7 +228,7 @@
 		<div class="col-md-6 contact-left wow fadeIn animated animated" data-wow-delay="0.1s" data-wow-duration="2s">
 			<h2>Find Us Here</h2>
 			<div class="strip"></div>
-			<p class="para">Gajanan Hospital and Laproscopy Center<br>Plot No D-12, N-2, CIDCO, Aurangabad.</p>
+			<p class="para">Health+ Hospital and Medical College<br>Sector 23, Chandigarh.</p>
 			<p class="copy-right">Designed By -<br> Onkar Singh and Sujay Khandagale</p>
 		</div>
 		<div class="clearfix"></div>

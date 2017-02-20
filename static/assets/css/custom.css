@@ -1,17 +1,4 @@
 
-/*=============================================================
-    Authour URI: www.binarycart.com
-    License: Commons Attribution 3.0
-
-    http://creativecommons.org/licenses/by/3.0/
-
-    100% To use For Personal And Commercial Use.
-    IN EXCHANGE JUST GIVE US CREDITS AND TELL YOUR FRIENDS ABOUT US
-   
-    ========================================================  */
-/*==============================================
-    GENERAL  STYLES    
-    =============================================*/
 body {
     font-family: 'Open Sans', sans-serif;
 }
@@ -145,6 +132,9 @@ background-color: #FFF;
 .nav > li > a > i {
     margin-right:10px;
 }
+.nav > li > a {
+    font-size: 15px;
+}
 .navbar-inverse .navbar-brand  {
 color: #000000;
 font-size: 25px;
@@ -221,13 +211,30 @@ border-radius: 0px;
 }
 
 .patient-details{
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-.patient-details{
     margin-left: 40px;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+
+.change-pass h4{
+    margin: 20px 0px 10px 40px;
+}
+.change-pass .submit{
+    margin-top: 40px;
+    background-color: #00A4E4;
+    border-color: #00A4E4;
+}
+
+.good {
+    margin-left: 40px;
+    font-size: 25px;
+    color: #FDA30E;
+}
+
+.add-report {
+    margin-left: 25%;
+    margin-top: 40px;
 }
 
 

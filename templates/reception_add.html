@@ -2,6 +2,7 @@
 <html>
 <head>
 <title> Health+</title>
+<!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
@@ -52,6 +53,7 @@
 		</script>
 <!--/End-date-piker-->
 
+
 	<!-- swipe box js -->
 	<script src="{{ url_for('static', filename='js/jquery.swipebox.min.js') }}"></script> 
 	    <script type="text/javascript">
@@ -60,6 +62,8 @@
 			});
 	</script>
 <!-- //swipe box js -->
+
+
 </head>
 <body>
 <!-- header -->
@@ -78,6 +82,7 @@
 					<li><a href="/dashboard"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ user }}</a></li>
 					{% endif %}
 					<li><a href="/logout"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Logout</a></li>
+					
 				</ul>
 			</div>
 			<div class="clearfix"></div>
@@ -135,11 +140,13 @@
                         <a href="/dashboard"><i class="fa fa-desktop "></i>Dashboard</a>
                     </li>
                     <li>
-                        <a href="/dashboard_book"><i class="fa fa-edit "></i>Book an Appointment</a>
+                        <a href="/reception_appt"><i class="fa fa-edit "></i>Check Appointments</a>
                     </li>
-
                     <li>
-                        <a href="/dashboard_reports"><i class="fa fa-table "></i>Past Reports</a>
+                        <a href="/reception_add"><i class="fa fa-table "></i>Add Patient Report</a>
+                    </li>
+                    <li>
+                        <a href="/dashboard_view"><i class="fa fa-edit "></i>View Patients</a>
                     </li>
                     <li>
                         <a href="/dashboard_settings"><i class="fa fa-edit "></i>Settings</a>
@@ -153,22 +160,20 @@
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper" >
             <div id="page-inner">
-                <div class="content">
-					<div class="container">
-						<div id="book" class="col-md-4 content_middle wow flipInY" data-wow-duration="1.5s" data-wow-delay="0.3s">
-							<h3>Book An Appointment</h3>
-								<form action="book_appointment" method="post">
-								<input type="text" name="book_name" placeholder="Name" required="">
-								<input type="text" name="book_email" placeholder="Email" required="">				
-								<input class="date" name="book_date" id="datepicker" type="text" placeholder="10/19/2016" required="">
-								<select name = "book_type" id="country" onchange="change_country(this.value)" class="frm-field required sect" required="">
-									<option value="" style="display:none" disabled selected>Select Department</option>
-									<option value="Health Care">Health Care</option> 
-									<option value="Body Checkup">Body Checkup</option>					
-									<option value="Out Patient">Out Patient</option>
-									<option value="Surgery">Surgery</option>											
-								</select>
-								<div>
+                <div class="row">
+                    <div class="col-md-12">
+                     <h2 class="text-center dash-welcome">Add Patient Report</h2>   
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+
+                    <div class="col-md-6 contact-grid add-report wow flipInY">
+						<form action="add_record" method="post">
+							<input type="text" name="username" placeholder="Username" required="" style="margin-bottom: 27px">
+							<input class="date" name="visit_date" id="datepicker" type="text" placeholder ="10/19/2016" required="" style="margin-bottom: 27px">
+							<textarea name="prescription" placeholder="Enter Prescription" required="" style="margin-bottom: 27px"></textarea>
+							<div>
 								{% with messages = get_flashed_messages(category_filter=["error"]) %}
 								  	{% if messages %}
 								    	<ul class=flash>
@@ -188,16 +193,15 @@
 									{% endif %}
 								{% endwith %}								
 							</div>
-							<br>
-								
-								<input type="submit" value="Book Now">
-							</form>
-						</div>
-				<div class="clearfix"></div>
+							<br><input type="submit" value="Add Report" >
+						</form>
 					</div>
-				</div>
-              
-                 <!-- /. ROW  -->           
+
+
+                </div>
+
+                 <!-- /. ROW  -->
+                
     		</div>
              <!-- /. PAGE INNER  -->
         </div>

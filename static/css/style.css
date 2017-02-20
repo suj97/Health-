@@ -7,7 +7,7 @@ html, body{
 h4, h5, h6,
 h1, h2, h3 {
 margin: 0;
-font-family: 'Viga', sans-serif;
+font-family: 'Open Sans', sans-serif;
 }
 p{
 	margin:0;
@@ -36,6 +36,14 @@ body a:hover{
 	text-decoration:none;
 }
 /*-- to-top --*/
+
+.back-image {
+    background-image: url(../images/hospital1.png);
+    background-size: 100%;
+    min-height: 900px;
+    margin-bottom: 40px;
+}
+
 /*-- contact --*/
 .contact{
 	background:#253b50;
@@ -741,18 +749,18 @@ top: 9%;
 .modal-body {
     padding: 15px 38px 30px;
 }
-.login-right input[type="text"] ,.login-right input[type="password"] ,.login-bottom input[type="text"] ,.login-bottom input[type="password"]{
+.login-right input[type="text"] ,.login-right input[type="password"] ,.login-bottom input[type="text"] ,.login-bottom input[type="number"] ,.login-bottom input[type="password"] ,.login-bottom select{
     width: 100%;
     padding: 10px;
     font-weight: normal;
     background: none;
     border: 1px solid #E6E4E4;
-    color: #D2D1D1;
+    color: #939292;
     outline: none;
     font-size: 14px;
     margin: 6px 0 17px 0px;
 }
-.login-right input[type="text"]:hover, .login-right input[type="password"]:hover, .login-bottom input[type="text"]:hover, .login-bottom input[type="password"]:hover{
+.login-right input[type="text"]:hover, .login-right input[type="password"]:hover, .login-bottom input[type="text"]:hover, .login-bottom input[type="number"]:hover, .login-bottom input[type="password"]:hover, .login-bottom select:hover{
     border: 1px solid #FDA30E;	
 }
 .login-right h4,.login-bottom h4 {
@@ -944,6 +952,7 @@ top: 9%;
 /*-- //banner --*/
 /*-- content --*/
 .content_left ul li{
+  font-size: 18px;
 	list-style-type:none;
 	color:#464646;
 	line-height:2.5em;
@@ -1401,7 +1410,7 @@ h3.tittle{
   padding: 15px!important;
 }
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-  font-size: 0.8em;
+  font-size: 1.2em;
   color: #999;
 }
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {

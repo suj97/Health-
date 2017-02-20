@@ -11,12 +11,13 @@ from flask import request           #for request methods
 from flask import session           
 from flask import g
 from flask.ext.mysql import MySQL
-from werkzeug import generate_password_hash, check_password_hash
+# from werkzeug import generate_password_hash, check_password_hash
 from flask import redirect
 from flask import url_for
 from flask import abort
 from flask import render_template   #for using html files, templates and layouts
 from flask import flash
+from flask import make_response
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -27,7 +28,6 @@ app.config.from_object(__name__)
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'robyrockk'
 app.config['MYSQL_DATABASE_DB'] = 'hospitals'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -36,8 +36,7 @@ mysql.init_app(app)
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'flaskr.db'),
     SECRET_KEY='development key',			# The SECRET_KEY is needed to keep the client-side sessions secure.
-    USERNAME='roby',	
-    PASSWORD='rockk'
+    USERNAME='root',
 ))
 # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
@@ -84,142 +83,316 @@ app.config.update(dict(
 #     init_db()
 #     print 'Initialized the database.'
 
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	# email = 'anonymous_user'
+	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		return render_template('index.html')
+	return render_template('index.html', user=email)
 
 @app.route('/facilities')
 def facilities():
-    return render_template('facilities.html')
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		return render_template('facilities.html')
+	return render_template('facilities.html', user=email)
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		return render_template('about.html')
+	return render_template('about.html', user=email)
 
-
-@app.route('/services')
-def services():
-    return render_template('services.html')
 
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		return render_template('contact.html')
+	return render_template('contact.html', user=email)
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from details where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		render_template('index.html')
+	if email == 'reception':
+		cursor.execute("SELECT count(*) from appointments where status='false'")
+		appt_number = cursor.fetchone()[0]
+		return render_template('dashboard_reception.html', user=email, appt_number= appt_number)
+	return render_template('dashboard.html', user=email, record=record)
+
+@app.route('/dashboard_view')
+def dashboard_view():
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from details where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		render_template('index.html')
+	if email == 'reception':
+		cursor.execute("SELECT username,patient_name,patient_contact from details ")
+		patient = cursor.fetchall()
+		return render_template('reception_view.html', user=email, patient= patient)
+
+@app.route('/dashboard_settings')
+def dashboard_settings():
+	email = request.cookies.get('userID')
+	if email == 'reception':
+		return render_template('reception_settings.html', user=email)	
+	return render_template('dashboard_settings.html', user=email)
 
 @app.route('/dashboard_book')
 def dashboard_book():
-    return render_template('dashboard_book.html')
+	email = request.cookies.get('userID')
+	return render_template('dashboard_book.html', user=email)
+
+@app.route('/book_appointment',methods=['GET', 'POST'])
+def book_appointment():
+	message = None
+	email = request.cookies.get('userID')
+	if request.method == 'POST':
+		book_name = request.form['book_name']
+		book_email = request.form['book_email']
+		book_date = request.form['book_date']
+		book_type = request.form.get('book_type')
+		conn = mysql.get_db()
+		cursor = conn.cursor()
+		cursor.execute("SELECT * from login_credentials where username='" + book_email + "'")
+		entry_user = cursor.fetchone()
+		cursor.execute("SELECT * from appointments where username='" + book_email + "' and booking_date='" + book_date + "'")
+		key = cursor.fetchone()
+		if entry_user is None:
+			message = "Username/Email is not registered"
+			flash(message, 'error') 
+			if email == 'anonymous_user':
+				return render_template('index.html')	
+			return render_template('dashboard_book.html', user=email)
+		elif key is None:
+			cursor.execute("insert into appointments (username, name, email, booking_date, department) values ('" + book_email + "', '" + book_name + "', '" + book_email + "', '" + book_date + "', '" + book_type + "')")
+			message = "Appointment of " + book_email +" for date : " + book_date + " has been booked successfully in " + book_type + " section"
+			conn.commit()
+			flash(message, 'success')
+			if email == 'anonymous_user':
+				return render_template('index.html')	
+			return render_template('dashboard_book.html', user=email)			
+		else:
+			message = book_email + " has previously booked an appointment on the same date"
+			flash(message, 'error')
+			if email == 'anonymous_user':
+				return render_template('index.html')	
+			return render_template('dashboard_book.html', user=email)			
+	if email == 'anonymous_user':
+		return render_template('index.html')	
+	return render_template('dashboard_book.html', user=email)
 
 @app.route('/dashboard_reports')
 def dashboard_reports():
-    return render_template('dashboard_reports.html')
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from details where username='" + email + "'")
+	record = cursor.fetchone()
+	if record is None:
+		render_template('index.html')
+	cursor.execute("SELECT * from records where username='" + email + "' ORDER BY STR_TO_DATE(visit_date, '%m/%d/%Y')")
+	record = cursor.fetchall()
+	cursor.execute("SELECT * from appointments where username='" + email + "' and status='false' ORDER BY STR_TO_DATE(booking_date, '%m/%d/%Y')")
+	appts = cursor.fetchall()
+	return render_template('dashboard_reports.html',user=email, record=record, appts=appts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	error = None
+	message = None
 	if request.method == 'POST':
-		# db = get_db()
-		# cursor = mysql.connect().cursor()
 		cursor = mysql.get_db().cursor()
 		email = request.form['email']
 		password = request.form['password']
-		# cursor.execute("SELECT * from login_credentials where username = ?" ,[request.form['username']])
 		cursor.execute("SELECT * from login_credentials where username='" + email + "'")
-		# cursor.execute("SELECT * from login_credentials where username ='" + email "'")
 		entry_user = cursor.fetchone()
 		cursor.execute("SELECT * from login_credentials where username='" + email + "' and password='" + password + "'")
-		# cursor.execute("SELECT * from login_credentials where username = ? and password = ?" ,[request.form['username'], request.form['password']])
 		entry_pass = cursor.fetchone()
 		if entry_user is None:
-			error = 'Username is not registered'
-			flash(error)
+			message = 'Username is not registered'
+			flash(message, 'login_error')
+			return render_template('index.html')
 		elif entry_pass is None:
-			error = 'Password is not correct'
-			flash(error)
+			message = 'Password is not correct'
+			flash(message, 'login_error')
+			return render_template('index.html')
+		elif email == 'reception':
+			session['logged_in'] = True
+			message = email + 'successfully logged in'
+			cursor.execute("SELECT count(*) from appointments where status='false'")
+			appt_number = cursor.fetchone()[0]
+			resp = make_response(render_template('dashboard_reception.html', user=email, appt_number=appt_number))
+			resp.set_cookie('userID', email)
+			return resp
 		else:
 			session['logged_in'] = True
-			flash("")
-			return render_template('dashboard.html', user=email)
-	# else:
-	# return render_template('index.html', error=error)
-	# render_template('index.html', error=error)
+			cursor.execute("SELECT * from details where username='" + email + "'")
+			record = cursor.fetchone()
+			message = 'Successfully logged in'
+			resp = make_response(render_template('dashboard.html', user=email, record=record))
+			resp.set_cookie('userID', email)
+			return resp
 	return redirect(url_for('index'))
-	# return render_template('user.html', user=user)
-
-
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     error = None
-#     if request.method == 'POST':
-# 		db = get_db()
-# 		# user = db.execute('select username from login_credentials')
-# 		# user_entries = user.fetchone()
-# 		# password = db.execute('select password from login_credentials')
-# 		# password_entries = password.fetchone()
-# 		user = db.execute("SELECT * from login_credentials where username = ?" ,[request.form['username']])
-# 		entry_user = user.fetchone()
-# 		password = db.execute("SELECT * from login_credentials where username = ? and password = ?" ,[request.form['username'], request.form['password']])
-# 		entry_pass = password.fetchone()
-# 		# if request.form['username'] != user_entries:
-# 		# 	error = 'Invalid username'
-# 		# elif request.form['password'] != password_entries:
-# 		# 	error = 'Invalid password'
-# 		if entry_user is None:
-# 			error = 'Username is not registered'
-# 		elif entry_pass is None:
-# 			error = 'Password is not correct'
-#         # if request.form['username'] != app.config['USERNAME']:
-#         #     error = 'Invalid username'
-#         # elif request.form['password'] != app.config['PASSWORD']:
-#         #     error = 'Invalid password'
-# 		else:
-# 			session['logged_in'] = True
-# 			flash('You were logged in')
-# 			return redirect(url_for('show_entries'))
-#     return render_template('login.html', error=error)
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-# 	error = None
-# 	if request.method == 'POST':
-# 		email = request.form['email']
-# 		password = request.form['password']
-
-# 		return render_template('dashboard.html')
-# 	else:
-# 		return render_template('contact.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-	error = None
+	message = None
 	if request.method == 'POST':
 		email = request.form['email']
 		password = request.form['password']
 		retype_password = request.form['retype_password']
+		patient_name = request.form['patient_name']
+		patient_age = request.form['patient_age']
+		patient_sex = request.form['patient_sex']
+		patient_blood_group = request.form['patient_blood_group']
+		patient_weight = request.form['patient_weight']
+		patient_contact = request.form['patient_contact']
 		conn = mysql.get_db()
 		cursor = conn.cursor()
 		cursor.execute("SELECT * from login_credentials where username='" + email + "'")
 		entry_user = cursor.fetchone()
 		if entry_user is None:
 			if password != retype_password:
-				error = "Password do not match"
-				flash(error)
+				message = "Password do not match" 
+				flash(message, 'register_error')
+				return render_template('index.html')
 			else:
+				cursor.execute("insert into details (username, patient_name, patient_age, patient_sex, patient_blood_group, patient_weight, patient_contact) values ('" + email + "', '" + patient_name + "', '" + patient_age + "', '" + patient_sex + "', '" + patient_blood_group + "', '" + patient_weight + "', '" + patient_contact + "')")
 				cursor.execute("insert into login_credentials (username, password) values ('" + email + "', '" + password + "')")
 				conn.commit()
-				flash("")
+				message = "Username " + email + " successfully registered"
+				flash(message, 'register_success')
+				return render_template('index.html')
 		else:
-			error = "Email is already registered"
-			flash(error)
+			message = "Email is already registered"
+			flash(message, 'register_error')
+			return render_template('index.html')
 	return redirect(url_for('index'))
-	# else:
-	# 	return redirect(url_for('index'))
+
+@app.route('/change_pass', methods=['GET', 'POST'])
+def change_pass():
+	error = None
+	email = request.cookies.get('userID')
+	if request.method == 'POST':
+		old_pass = request.form['old_pass']
+		new_pass = request.form['new_pass']
+		conn = mysql.get_db()
+		cursor = conn.cursor()
+		cursor.execute("SELECT * from login_credentials where username='" + email + "' and password='" + old_pass + "'")
+		entry_pass = cursor.fetchone()
+		if entry_pass is None:
+			message = 'Password is not correct'
+			flash(message, 'change_pass_error')
+			if email == 'reception':
+				return render_template('reception_settings.html', user=email)	
+			return render_template('dashboard_settings.html', user=email)
+		else:
+			cursor.execute("UPDATE login_credentials SET password='" + new_pass + "' where username='" + email + "'")
+			conn.commit()
+			message = 'Password updated successfully'
+			flash(message, 'change_pass_success')
+			if email == 'reception':
+				return render_template('reception_settings.html', user=email)			
+			return render_template('dashboard_settings.html', user=email)
+	return render_template('dashboard_settings.html', user=email)
+
+
+@app.route('/change_number', methods=['GET', 'POST'])
+def change_number():
+	error = None
+	email = request.cookies.get('userID')
+	if request.method == 'POST':
+		new_contact = request.form['new_contact']
+		conn = mysql.get_db()
+		cursor = conn.cursor()
+		cursor.execute("UPDATE details SET patient_contact='" + new_contact + "' where username='" + email + "'")
+		message = 'Contact no. updated successfully'
+		conn.commit()
+		flash(message, 'change_contact')
+		return render_template('dashboard_settings.html', user=email)
+	return render_template('dashboard_settings.html', user=email)
+
+@app.route('/reception_appt')
+def reception_appt():
+	email = request.cookies.get('userID')
+	cursor = mysql.get_db().cursor()
+	cursor.execute("SELECT * from appointments where status='true' ORDER BY STR_TO_DATE(booking_date, '%m/%d/%Y')")
+	record_true = cursor.fetchall()
+	cursor.execute("SELECT * from appointments where status='false' ORDER BY STR_TO_DATE(booking_date, '%m/%d/%Y')")
+	record_false = cursor.fetchall()
+	return render_template('reception_appointments.html', user=email, record_true=record_true, record_false= record_false)
+
+@app.route('/reception_add')
+def reception_add():
+	email = request.cookies.get('userID')
+	return render_template('reception_add.html', user=email)
+
+
+@app.route('/add_record',methods=['GET', 'POST'])
+def add_record():
+	message = None
+	email = request.cookies.get('userID')
+	if request.method == 'POST':
+		username = request.form['username']
+		visit_date = request.form['visit_date']
+		prescription = request.form['prescription']
+		conn = mysql.get_db()
+		cursor = conn.cursor()
+		cursor.execute("SELECT * from login_credentials where username='" + username + "'")
+		entry_user = cursor.fetchone()
+		cursor.execute("SELECT * from appointments where username='" + username + "' and booking_date='" + visit_date + "'")
+		key = cursor.fetchone()
+		cursor.execute("SELECT * from records where username='" + username + "' and visit_date='" + visit_date + "'")
+		entry = cursor.fetchone()
+		if entry_user is None:
+			message = "Username/Email is not registered" 
+			flash(message, 'error')
+			return render_template('reception_add.html', user=email)
+		elif key is None:
+			message = "No such appointment is there"
+			flash(message, 'error')
+			return render_template('reception_add.html', user=email)
+		elif entry is None:
+			cursor.execute("insert into records (username, visit_date, prescription) values ('" + username + "', '" + visit_date + "', '" + prescription + "')")
+			message = "You have added record for " + username + " who visited on " + visit_date
+			cursor.execute("update appointments SET status='true' where username='"+ username +"' and booking_date='"+visit_date+"'")
+			conn.commit()
+			flash(message, 'success')
+			return render_template('reception_add.html', user=email)
+		else:
+			message = "This record of " + username + " has been added previously"
+			flash(message, 'error')
+			return render_template('reception_add.html', user=email)
+	return render_template('reception_add.html', user=email)
+
+
+
+
+
+
 
 # @app.route('/add', methods=['POST'])
 # def add_entry():
@@ -232,24 +405,12 @@ def register():
 #     flash('New entry was successfully posted')
 #     return redirect(url_for('show_entries'))
 
-# # @app.route('/checkDetails',methods=['POST','GET'])
-# # def checkDetails():
 
-# # 	# read the posted values from the UI
-# # 	username = request.form['inputEmail']
-# # 	password = request.form['inputPassword']
-
-# # 	cursor = mysql.connect().cursor()
-# # 	cursor.execute("SELECT * from tbl_user where user_username='" + username + "' and user_password='" + password + "'")
-# # 	data = cursor.fetchone()
-# # 	if data is None:
-# # 		return "Username or Password is wrong"
-# # 	else:
-# # 		return str(data);
-
-# @app.route('/logout')
-# def logout():
-#     session.pop('logged_in', None)
-#     flash('You were logged out')
-#     return redirect(url_for('show_entries'))
-
+@app.route('/logout')
+def logout():
+    # session.pop('logged_in', None)
+    # flash('You were logged out')
+	resp = make_response(render_template('index.html'))
+	resp.set_cookie('userID', 'anonymous_user')
+	return resp
+    # return redirect(url_for('index'))
