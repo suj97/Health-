@@ -83,12 +83,11 @@ app.config.update(dict(
 #     init_db()
 #     print 'Initialized the database.'
 
-
 @app.route('/')
 def index():
 	email = request.cookies.get('userID')
 	cursor = mysql.get_db().cursor()
-	# email = 'anonymous_user'
+	email = 'anonymous_user'
 	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
 	record = cursor.fetchone()
 	if record is None:
