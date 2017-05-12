@@ -86,8 +86,9 @@ app.config.update(dict(
 @app.route('/')
 def index():
 	email = request.cookies.get('userID')
+	if not email:
+		email = 'anonymous_user'
 	cursor = mysql.get_db().cursor()
-	email = 'anonymous_user'
 	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
 	record = cursor.fetchone()
 	if record is None:
@@ -97,6 +98,8 @@ def index():
 @app.route('/facilities')
 def facilities():
 	email = request.cookies.get('userID')
+	if not email:
+		email = 'anonymous_user'
 	cursor = mysql.get_db().cursor()
 	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
 	record = cursor.fetchone()
@@ -107,6 +110,8 @@ def facilities():
 @app.route('/about')
 def about():
 	email = request.cookies.get('userID')
+	if not email:
+		email = 'anonymous_user'
 	cursor = mysql.get_db().cursor()
 	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
 	record = cursor.fetchone()
@@ -119,6 +124,8 @@ def about():
 @app.route('/contact')
 def contact():
 	email = request.cookies.get('userID')
+	if not email:
+		email = 'anonymous_user'
 	cursor = mysql.get_db().cursor()
 	cursor.execute("SELECT * from login_credentials where username='" + email + "'")
 	record = cursor.fetchone()
